@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+    body {
+  background-image: url('/static/background3.png');
+  background-size: cover; /* or contain depending on your preference */
+  background-position: center center;
+  background-repeat: no-repeat;
+}
+</style>
+<head>
+    <title>Application Statistics</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <h1>Application Statistics</h1>
+    <table>
+        <tr>
+            <td>Total Applicants:</td>
+            <td>{{ total_applicants }}</td>
+        </tr>
+        <tr>
+            <td>Total Admitted:</td>
+            <td>{{ total_admitted }}</td>
+        </tr>
+        <tr>
+            <td>Total Rejected:</td>
+            <td>{{ total_rejected }}</td>
+        </tr>
+        <tr>
+            <td>Average GRE Score (Master's):</td>
+            <td>{{ masters_average_gre }}</td>
+        </tr>
+        <tr>
+            <td>Average GRE Score (PhD):</td>
+            <td>{{ phd_average_gre }}</td>
+        </tr>
+    </table>
+</body>
+    </table>
+    <canvas id="myChart1" width="400" height="400"></canvas>
+    <canvas id="myChart2" width="400" height="400"></canvas>
+    <canvas id="myChart3" width="400" height="400"></canvas>
+    <canvas id="myChart4" width="400" height="400"></canvas>
+    <script>
+        var ctx1 = document.getElementById('myChart1').getContext('2d');
+        var myChart1 = new Chart(ctx1, {
+            type: 'pie',
+            data: {
+                labels: ['Admitted', 'Not Admitted'],
+                datasets: [{
+                    label: '# of Applicants',
+                    data: [{{ total_admitted }}, {{ total_applicants - total_admitted }}],
+                    backgroundColor: [
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(255, 99, 132, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(255, 99, 132, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: false
+            }
+        });
+    
+        var ctx2 = document.getElementById('myChart2').getContext('2d');
+        var myChart2 = new Chart(ctx2, {
+            type: 'pie',
+            data: {
+                labels: ['Rejected', 'Not Rejected'],
+                datasets: [{
+                    label: '# of Applicants',
+                    data: [{{ total_rejected }}, {{ total_applicants - total_rejected }}],
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(75, 192, 192, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(75, 192, 192, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: false
+            }
+        });
+    </script>
+    
+    {% endblock %}

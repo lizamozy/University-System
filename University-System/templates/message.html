@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %} Send Message {% endblock %}
+
+{% block content %}
+<style>
+    body {
+  background-image: url('/static/iron.png');
+  background-size: cover; /* or contain depending on your preference */
+  background-position: center center;
+  background-repeat: no-repeat;
+  }
+  </style>
+<div class="container">
+    <div class="row">
+        <h2>Send Message to {{recipient.name}}</h2>
+    </div>
+    <br>
+    <a href = "/">
+        <button type = "button">Return Home</button>
+    </a>
+    <form action="{{url_for('registration.send_message')}}" method="post">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label for="message">Message:</label>
+                    <textarea class="form-control" id="message" name="message" rows="5" maxlength="250"></textarea>
+                </div>
+            </div>
+        </div>
+        
+        <input type="hidden" name="recipient" value="{{recipient}}">
+        <input type="hidden" name="CID" value="{{course}}">
+
+        <div class="row">
+            <div class="col-md-12">
+                <button type="submit" class="btn btn-primary">Send</button>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock content %}

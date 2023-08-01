@@ -1,0 +1,16 @@
+{% macro homeView(first_name, id) -%} 
+<style>
+    body {
+  background-image: url('/static/diamond.png');
+  background-size: cover; /* or contain depending on your preference */
+  background-position: center center;
+  background-repeat: no-repeat;
+  }
+  </style>
+    <h1>Welcome, {{first_name}}!</h1>
+    <h4>University ID: {{id}} </h4>
+    
+    <a href="{{url_for('personal_info')}}" class="btn btn-primary">
+            Personal Information</a>
+
+{%- endmacro %}

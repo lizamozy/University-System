@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %} Assign Grades {% endblock %}
+
+{% block content %}
+<style>
+  body {
+background-image: url('/static/iron.png');
+background-size: cover; /* or contain depending on your preference */
+background-position: center center;
+background-repeat: no-repeat;
+}
+</style>
+<body>
+  <center>
+    <a href = "/">
+      <button type = "button">Return Home</button>
+  </a>
+  
+
+    {% if courses %}
+    <h2>Assign Professors</h2>
+    <form action="{{ url_for('registration.assign_professor') }}" method="POST">
+      <label for="professor_id">Select Professor:</label>
+      <select name="professor_id" id="professor_id">
+        {% for professor in professors %}
+        <option value="{{ professor["id"] }}">{{ professor["first_name"] }} {{ professor["last_name"] }}</option>
+        {% endfor %}
+      </select>
+      
+      <label for="course_id">Select Course:</label>
+      <select name="course_id" id="course_id">
+        {% for course in courses %}
+        <option value="{{ course["ID"] }}">{{ course["department"] }} {{ course["cnumber"] }} - {{ course["title"] }}</option>
+        {% endfor %}
+      </select>
+      
+      <input type="submit" value="Assign Professor">
+    </form>
+    {% else %}
+      <h2>No Courses Found</h2>
+    {% endif %}
+
+    <!-- ... -->
+
+  </center>
+{% endblock content %}

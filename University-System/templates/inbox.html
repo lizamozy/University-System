@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block title %} Classmate Messages {% endblock %}
+
+{% block content %}
+<style>
+    body {
+  background-image: url('/static/iron.png');
+  background-size: cover; /* or contain depending on your preference */
+  background-position: center center;
+  background-repeat: no-repeat;
+  }
+  </style>
+    <div class="container">
+        <div class="row">
+            <h2>Messages from Classmates</h2>
+        </div>
+        <br>
+        <a href = "/">
+            <button type = "button">Return Home</button>
+        </a>
+        <div class="table-responsive">
+            <table class="table table-hover" id="messages-table">
+                <thead class="table-light">
+                    <tr>
+                        <th scope="col">Timestamp</th>
+                        <th scope="col">Sender</th>
+                        <th scope="col">Course</th>
+                        <th scope="col">Message</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for message in messages %}
+                        <tr>    
+                            <td>{{ message.date }}</td>
+                            <td>{{ message.first_name }} {{ message.last_name }}</td>
+                            <td>{{ message.CID }}</td>
+                            <td>{{ message.message }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+{% endblock content %}
+
+{% block extra_js %}
+    <script>
+        $(document).ready( function () {
+            $('#messages-table').DataTable({
+                "language": {
+                    "emptyTable": "No messages found.",
+                    "zeroRecords": "No matching messages found."
+                },
+                order: [[0, 'desc']],
+            });
+        });
+    </script>
+{% endblock extra_js %}

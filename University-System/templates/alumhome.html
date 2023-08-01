@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %} Alum Home {% endblock %}
+
+{% block content %}
+
+    {% import 'home.html' as home %} 
+
+	<link rel="stylesheet" href="https://minecraft--duck132912.repl.co/minecraft.css" />
+    <link rel="stylesheet" type="text/css" href="https://minecraft--duck132912.repl.co/style.css">
+    <div class="container">
+         <div class="row">
+            {{home.homeView(alum.first_name, alum.id)}}
+            <p class="mt-3"><strong>Program:</strong> {{programTypes[alum_info.program]}} <strong>Graduation Year:</strong> {{alum_info.grad_year}}</p>
+        </div>
+        <br>
+
+        <div class="row justify-content-md-center">
+            <div class="col">
+                <a href="{{url_for('transcript.view')}}" class="btn btn-primary">
+                    View Transcript</a>
+            </div>
+            <div class="col">
+                
+                <a href="{{url_for('chatroom.view')}}" class="btn btn-primary">
+                    Enter Chatroom!</a>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

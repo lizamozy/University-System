@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% block title %} User Home {% endblock %}
+{% block content %}
+
+    {% import 'home.html' as home %} 
+    <style>
+        body {
+      background-image: url('/static/iron.png');
+      background-size: cover; /* or contain depending on your preference */
+      background-position: center center;
+      background-repeat: no-repeat;
+    }
+    </style>
+    <div class="container">
+        <div class="row">
+        {{ home.homeView(user.first_name, user.id)}}
+        </div>
+        <br>
+
+        <div class="row justify-content-md-center">
+            {% if session['userType'] in ['gs'] %}
+            <div class="col">
+                <a href="{{url_for('students.view_graduating')}}" class="btn btn-primary">
+                    View Graduating Students</a>
+            </div>
+            {% endif %}
+            {% if session['userType'] in ['sysadmin'] %}
+            <div class="col">
+                <a href="{{url_for('users.view_users')}}" class="btn-primary">
+                    View All Users</a>
+            </div>
+            <div class="col">
+                <a class="btn btn-primary" href="{{url_for('registration.assign_professor')}}">
+                    Assign Professors</a>
+            </div>
+            <div class="col">
+                <a class="btn btn-primary" href="{{url_for('applications.stats')}}">
+                    Applicant Statistics</a>
+            </div>
+            {% endif %}
+                    {% if session['userType'] in ['faculty']%}
+                    <div class="col">
+                        <a href="{{url_for('students.index')}}" class="btn btn-primary">
+                            View Advisees</a>
+                    </div>
+                    {% elif session['userType'] in ['gs', 'sysadmin'] %}
+                    <div class="col">
+                        <a href="{{url_for('students.index')}}" class="btn btn-primary">
+                            View all students</a>
+                    </div>
+                    {% endif %}
+                    {% if session['userType'] in ['gs', 'sysadmin', 'faculty'] %}
+                <div class="col">
+                    <a class="btn btn-primary" href="{{url_for('registration.profCourses')}}">
+                        My courses</a>
+                </div>
+                <div class="col">
+                    <a class="btn btn-primary" href="{{url_for('registration.assign_grades')}}">
+                        Assign Grades</a>
+                </div>
+                {% if factype['is_reviewer'] == 1 or factype['is_admissions_chair'] == 1 %}
+                <div class="col">
+                    <a class="btn btn-primary" href="{{url_for('applications.review_applications')}}">
+                        View Applicants</a>
+                </div>
+                {% endif %}
+            {% endif %}
+        </div>
+    </div>
+    
+    </div>
+
+
+{% endblock content %}

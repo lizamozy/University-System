@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% block title %}Professor List{% endblock %}
+{% block content %}
+<style>
+    body {
+  background-image: url('/static/iron.png');
+  background-size: cover; /* or contain depending on your preference */
+  background-position: center center;
+  background-repeat: no-repeat;
+  }
+  </style>
+    <h1>Professor List</h1>
+    <a href="/"><input type=button value="Return Home"/></a><br><br>
+    <div class="table-responsive">
+        <table class="table table-hover" id="professors-ratings-table">
+            <thead class="table-light">
+                <tr>
+                    <th scope="col">Last Name</th>
+                    <th scope="col">First Name</th>
+                    <th scope="col">ID</th>
+                    <th scope="col">Rating</th>
+                    <th scope="col">Comment</th>
+                    <th scope="col" data-orderable="false" data-searchable="false">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for professor in professors %}
+                    <tr>
+                        <td>{{ professor.last_name }}</td>
+                        <td>{{ professor.first_name }}</td>
+                        <td>{{ professor.id }}</td>
+                        <td>
+                            <form action="{{url_for('registration.rate_professor')}}" method="POST" style="display: inline;">
+                                <select name="rating">
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                </select>
+                        </td>
+                        <td>
+                            <input type="hidden" name="PID" value="{{professor.id}}">
+                            <input type="text" name="comment" placeholder="Comment" maxlength="100">
+                        </td>
+                        <td>
+                            <button type="submit" class="btn btn-primary">Submit Rating</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock content %}
+
+{% block extra_js %}
+    <script>
+        $(document).ready( function () {
+            $('#professors-ratings-table').DataTable({
+                "language": {
+                    "emptyTable": "No professors found.",
+                    "zeroRecords": "No matching professors found."
+                },
+                order: [[0, 'asc'], [1, 'asc']],
+            });
+        });
+    </script>
+{% endblock extra_js %}

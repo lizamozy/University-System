@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+    body {
+  background-image: url('/static/background3.png');
+  background-size: cover; /* or contain depending on your preference */
+  background-position: center center;
+  background-repeat: no-repeat;
+}
+</style>
+<div class="row">
+    <h1>Admission Status</h1>
+    {% if status[0] == 'incomplete' %}
+        <p>Your application is currently incomplete. Please complete all the required fields in the application form.</p>
+    {% elif status[0] == 'complete' %}
+        <p>Your application is complete and is currently under review. You will be notified of the decision as soon as possible.</p>
+    {% elif status[0] == 'admit' %}
+        <p>Congratulations! You have been admitted to our program. Please follow the instructions provided in the admission letter to complete your enrollment.</p>
+    {% elif status[0] == 'reject' %}
+        <p>We regret to inform you that your application has been rejected. We appreciate your interest in our program and wish you the best of luck in your future endeavors.</p>
+    {% elif status[0] == 'admit_aid' %}
+    <p>Congratulations! You have been admitted to our program with aid! Please follow the instructions provided in the admission letter to complete your enrollment.</p>
+    {% elif status[0] == 'border' %}
+    <p>Your application is complete and is currently under review. We are getting close to the end of the review process, hold tight!</p>
+    {% endif %}
+    <br><br>
+    {% if status[0] == "admit_aid" or status[0] == "admit" %}
+    <form method="POST">
+      <input type="hidden" name="user_id" value="{{ user_id }}">
+      <button type="submit" class="btn btn-success">Accept Admission</button>
+    </form>
+    {% if accepted %}
+      <p>Congratulations! You have accepted admission. Please proceed to <a href="{{ url_for('applications.paypal') }}">Pay Admission Fee</a>.</p>
+    {% endif %}
+    {% endif %}
+    <a href="{{ url_for('applications.applicant') }}">Back to Dashboard</a>
+</div>
+        {% endblock %}

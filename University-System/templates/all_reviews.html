@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <h1>All Reviews</h1>
+    <table>
+        <tr>
+            <th>Application ID</th>
+            <th>Reviewer ID</th>
+            <th>Reviewer Comments</th>
+            <th>Recommendation Rating</th>
+            <th>Recommended Advisor</th>
+        </tr>
+        {% for review in review_forms %}
+            <tr>
+                <td>{{ review[0] }}</td>
+                <td>{{ review[1] }}</td>
+                <td>{{ review[2] }}</td>
+                <td>{{ review[3] }}</td>
+                <td>{{ review[4] }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+ 
+    <br><br>
+    <a href="{{ url_for('applications.review_applications') }}">Back to Review Applications</a>
+
+    {% endblock %}

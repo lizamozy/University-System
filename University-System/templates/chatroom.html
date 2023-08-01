@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% block title %}Alumni Chatroom{% endblock %}
+{% block content %}
+
+<html>
+  <head>
+    <title>Minecraft Universtiy Alumni Chatroom</title>
+    <meta charset="UTF-8">
+    <style>
+      /* Add some basic styling to make the page look nicer */
+      body {
+        font-family: minecraft;
+        margin: 0;
+        padding: 0;
+      }
+      h1 {
+        text-align: center;
+      }
+      #messages {
+        height: 300px;
+        overflow-y: scroll;
+        padding: 10px;
+      }
+      #input-box {
+        display: flex;
+        margin-top: 10px;
+      }
+      #message-input {
+        flex-grow: 1;
+        padding: 5px;
+        font-size: 16px;
+      }
+      #send-button {
+        background-color: #4CAF50;
+        border: none;
+        color: white;
+        padding: 10px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin-left: 5px;
+        cursor: pointer;
+      }
+      /* Add some styling for the sent messages window */
+      #sent-messages {
+        height: 500px;
+        overflow-y: scroll;
+        padding: 10px;
+        margin-top: 10px;
+        border: 1px solid #ccc; 
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Minecraft University Alumni Chatroom</h1>
+    <div id="sent-messages">
+      {% for message in messages %}
+        <div><strong><p>{{ message.identity }}</strong>: {{ message.message }} </p></div>
+      {% endfor %}
+    </div>
+    <form action="{{url_for('chatroom.send_message')}}" method="POST" class="needs-validation" novalidate>
+      <div id="input-box">
+        <input type="text" id="message-input" name="message" placeholder="Type your message here">
+        <button type="submit" id="send-button">Send</button>
+      </div>
+    </form>
+  </body>
+</html>
+{% endblock %}

@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+    body {
+  background-image: url('/static/diamond.png');
+  background-size: cover; /* or contain depending on your preference */
+  background-position: center center;
+  background-repeat: no-repeat;
+}
+</style>
+    <h1>Review Form</h1>
+    <form action="{{ url_for('applications.review_form') }}" method="post">
+      <fieldset>
+        <legend>Application Information</legend>
+        <div>
+            <label for="degree-sought">Degree Sought:</label>
+            <input type="text" id="degree-sought" name="degree-sought" value="{{ application_data[3] }}" disabled>
+        </div>
+        <div>
+            <label for="admission-date">Admission Date:</label>
+            <input type="text" id="admission-date" name="admission-date" value="{{ application_data[4] }}" disabled>
+        </div>
+        <div>
+            <label for="prior-degrees">Prior Degrees:</label>
+            <input type="text" id="prior-degrees" name="prior-degrees" value="{{ application_data[5] }}" disabled>
+        </div>
+        <div>
+            <label for="year-of-graduation">Year of Graduation:</label>
+            <input type="text" id="year-of-graduation" name="year-of-graduation" value="{{ application_data[8] }}" disabled>
+        </div>
+        <div>
+            <label for="gpa">GPA:</label>
+            <input type="text" id="gpa" name="gpa" value="{{ application_data[9] }}" disabled>
+        </div>
+        <div>
+            <label for="rec-letter">Recommendation Letter Email(s):</label>
+            <input type="text" id="rec-letter" name="rec-letter" value="{{ application_data[7] }}" disabled>
+        </div>
+        <div>
+            <label for="rec-name">Recommendation Letter Name(s):</label>
+            <input type="text" id="rec-name" name="rec-name" value="{{ recommendation_data[1] }}" disabled>
+        </div>
+        <div>
+            <label for="rec-title">Recommendation Letter Title(s):</label>
+            <input type="text" id="rec-title" name="rec-title" value="{{ recommendation_data[3] }}" disabled>
+        </div>
+        <div>
+            <label for="rec-affil">Recommendation Letter Affiliation(s):</label>
+            <input type="text" id="rec-affil" name="rec-affil" value="{{ recommendation_data[4] }}" disabled>
+        </div>
+        <div>
+            <label for="rec-comment">Recommendation Letter Comment(s):</label>
+            <input type="text" id="rec-comment" name="rec-comment" value="{{ recommendation_data[8] }}" disabled>
+        </div>
+        <div>
+            <label for="university">University:</label>
+            <input type="text" id="university" name="university" value="{{ application_data[10] }}" disabled>
+        </div>
+        <div>
+            <label for="work-experience">Work Experience:</label>
+            <input type="text" id="work-experience" name="work-experience" value="{{ application_data[14] }}" disabled>
+        </div>
+        {% if application_data[13] == 0 %}
+        <div>
+            <label for="total-score">Total Score:</label>
+            <input type="text" id="total-score" name="total-score" value="GRE scores not provided" disabled>
+        </div>
+        {% else %}
+        <div>
+            <label for="verbal-score">Verbal Score:</label>
+            <input type="text" id="verbal-score" name="verbal-score" value="{{ application_data[11] }}" disabled>
+        </div>
+        <div>
+            <label for="quantitative-score">Quantitative Score:</label>
+            <input type="text" id="quantitative-score" name="quantitative-score" value="{{ application_data[12] }}" disabled>
+        </div>
+        <div>
+            <label for="total-score">Total Score:</label>
+            <input type="text" id="total-score" name="total-score" value="{{ application_data[13] }}" disabled>
+        </div>
+        {% endif %}
+  </fieldset>
+        <label for="applicant_id">Application ID:</label>
+        <input type="text" id="applicant_id" name="applicant_id" value="{{ applicant_id }}" disabled><br>
+        <label for="recommendation">Recommendation Rating:</label>
+        <select id="recommendation" name="recommendation" required>
+            <option value="1">1 - Not Recommended</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+            <option value="10">10 - Highly Recommended</option>
+          </select><br>        
+        <label for="comments">Comments:</label>
+        <textarea id="comments" name="comments"></textarea><br>
+        <label for="advisor">Recommended Advisor (ID):</label>
+        <select name="advisor" id="advisor" class="form-control" required>
+            {% for a in advisors %}
+            <option value="{{ a }}">{{ a }}</option>
+            {% endfor %}
+            </select>
+            <input type="submit" value="Submit Review">
+    </form>
+    {% endblock %}

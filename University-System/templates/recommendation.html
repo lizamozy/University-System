@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+    body {
+  background-image: url('/static/iron.png');
+  background-size: cover; /* or contain depending on your preference */
+  background-position: center center;
+  background-repeat: no-repeat;
+  }
+  </style>
+<head>
+    <title>Recommendation Letter</title>
+</head>
+<body>
+    <h1>Recommendation Letter</h1>
+    <form method="post" action="{{ url_for('applications.recommendation') }}">
+        <label for="LetterWriterEmail">Writer Email:</label>
+        <input type="email" id="LetterWriterEmail" name="LetterWriterEmail" value="{{ letter_writer_email[0]  }}" disabled><br>
+
+        <label for="LetterWriterName">Writer Name:</label>
+        <input type="text" id="LetterWriterName" name="LetterWriterName" required><br>
+
+        <label for="LetterWriterTitle">Writer Title:</label>
+        <input type="text" id="LetterWriterTitle" name="LetterWriterTitle" required><br>
+
+        <label for="LetterWriterAffiliation">Writer Affiliation:</label>
+        <input type="text" id="LetterWriterAffiliation" name="LetterWriterAffiliation" required><br>
+
+        <label for="RecommendationRating">Recommendation Rating:</label>
+        <select id="RecommendationRating" name="RecommendationRating" required>
+            <option value="">Please select a rating</option>
+            <option value="1">1 (Lowest)</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">4</option>
+        </select>
+        <br>
+        <label for="RecommendationComments">Recommendation Comments:</label><br>
+        <textarea id="RecommendationComments" name="RecommendationComments" rows="4" cols="50"></textarea><br>
+
+        <input type="submit" value="Submit">
+    </form>
+</body>
+{% endblock %}

@@ -1,0 +1,126 @@
+{% extends "base.html" %}
+{% block title %}Edit User - {{user.first_name}} {{user.last_name}}{% endblock %}
+{% block content %}
+{% import 'backbtn.html' as back %}
+{{back.backBtn()}}
+<style>
+    body {
+  background-image: url('/static/iron.png');
+  background-size: cover; /* or contain depending on your preference */
+  background-position: center center;
+  background-repeat: no-repeat;
+}
+</style>
+    <h2>Edit User</h2>
+    <h3 class="pb-2">{{user.first_name}} {{user.last_name}}</h3>
+    <form action="{{url_for('.edit', userId = session.userId)}}" method="POST" class="needs-validation" novalidate>
+        <div class="mb-3">
+            <label for="firstName" class="form-label">First Name</label>
+            <input type="text" class="form-control" id="firstName" name="firstName" required maxlength="50" value="{% if request.form.firstName %}{{request.form.firstName}}{% else %}{{user.first_name}}{% endif %}">
+            <div class="invalid-feedback">
+                Please provide a first name.
+            </div>
+        </div>
+        <div class="mb-3">
+            <label for="lastName" class="form-label">Last Name</label>
+            <input type="text" class="form-control" id="lastName" name="lastName" required maxlength="50" value="{% if request.form.lastName %}{{request.form.lastName}}{% else %}{{user.last_name}}{% endif %}">
+            <div class="invalid-feedback">
+                Please provide a first name.
+            </div>
+        </div>
+        <div class="mb-3">
+            <label for="universityId" class="form-label">University ID</label>
+            <input type="tel" class="form-control" id="universityId" name="universityId" required pattern="\d{8}" value="{% if request.form.universityId %}{{request.form.universityId}}{% else %}{{user.id}}{% endif %}">
+            <div class="invalid-feedback">
+                Please provide an 8-digit university ID.
+            </div>
+        </div>
+        <div class="mb-3">
+            <label for="email" class="form-label">Email Address</label>
+            <input type="email" class="form-control" id="email" name="email" {% if request.form.email %} value="{{request.form.email}}"{% endif %}>
+            <div class="invalid-feedback">
+                Please provide an email address. 
+            </div>
+        </div>
+        <h6>Address</h6>
+        <div class="mb-3">
+            <label for="stAddr" class="form-label">Street Address</label>
+            <input type="text" class="form-control" id="stAddr" name="stAddr" required maxlength="50" {% if request.form.stAddr %} value="{{request.form.stAddr}}"{% endif %}>
+            <div class="invalid-feedback">
+                Please provide a street address.
+            </div>
+        </div>
+        <div class="mb-3">
+            <label for="city" class="form-label">City</label>
+            <input type="text" class="form-control" id="city" name="city" required maxlength="50" {% if request.form.city %} value="{{request.form.city}}"{% endif %}>
+            <div class="invalid-feedback">
+                Please provide a city.
+            </div>
+        </div>
+        <div class="mb-3">
+            <label for="state" class="form-label">State</label>
+            <input type="text" class="form-control" id="state" name="state" required minlength="2" maxlength="2" pattern="[A-Z]*"{% if request.form.state %} value="{{request.form.state}}"{% endif %}>            <div class="invalid-feedback">
+                Please provide a state.
+            </div>
+        </div>
+        <div class="mb-3">
+            <label for="zipCode" class="form-label">Zip Code</label>
+            <input type="tel" class="form-control" id="zipCode" name="zipCode" required maxlength="5" pattern = "[0-9]*" {% if request.form.zipCode %} value="{{request.form.zipCode}}"{% endif %}>
+            <div class="invalid-feedback">
+                Please provide a zip code.
+            </div>
+        </div>
+        <div class="mb-3">
+            <label for="userType" class="form-label">User Type</label>
+            <select class="form-select" name="userType" id="userType" required>
+                <option selected disabled value="">Select a user type</option>
+                {% for key, val in userTypes.items() %}
+                    <option value="{{key}}"{% if request.form.userType == key or (not request.form.userType and user.type == key) %} selected{% endif %}>{{val}}</option>
+                {% endfor %}
+            </select>
+            <div class="invalid-feedback">
+                Please select a user type.
+            </div>
+        </div>
+        <div class="collapse" id="studentSection">
+            <h3>Student Information</h3>
+            <div class="mb-3">
+                <label for="advisorId" class="form-label">Student Advisor</label>
+                <select class="form-select" name="advisorId" id="advisorId">
+                    {{user.advisor_id}}
+                    <option selected disabled value="">Select an advisor</option>
+                    {% for advisor in advisors %}
+                        <option value="{{advisor.id}}"{% if request.form.advisorId == advisor.id or (not request.form.advisorId and user.advisor_id == advisor.id) %} selected{% endif %}>{{advisor.first_name}} {{advisor.last_name}}</option>
+                    {% endfor %}
+                </select>
+                <div class="invalid-feedback">
+                    Please select an advisor.
+                </div>
+            </div>
+        </div>
+        <div class="mb-3">
+            <button type="submit" class="btn btn-primary">Add User</button>
+        </div>
+    </form>
+{% endblock content %}
+
+{% block extra_js %}
+    <script>
+        const bsCollapse = new bootstrap.Collapse('#studentSection', {
+            toggle: false
+        })
+        $('#userType').change(function() {
+            if ($(this).val() == 'student') {
+                bsCollapse.show()
+                $('#advisorId').prop('required', true)
+            } else {
+                bsCollapse.hide()
+                $('#advisorId').prop('required', false)
+            }
+        });
+        {% if 'student' in (request.form.userType, user.type) %}
+            bsCollapse.show()
+            $('#advisorId').prop('required', true)
+        {% endif %}
+    </script>
+{% endblock extra_js %}

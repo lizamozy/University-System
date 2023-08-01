@@ -1,0 +1,159 @@
+{% extends "base.html" %}
+{% block title %} Student Home {% endblock %}
+
+{% block content %}
+<style>
+    body {
+  background-image: url('/static/iron.png');
+  background-size: cover; /* or contain depending on your preference */
+  background-position: center center;
+  background-repeat: no-repeat;
+}
+</style>
+    {% import 'home.html' as home %}
+    <style>
+    .center-text {
+        text-align: center;
+    }
+    </style>
+    <div class="container">
+        <div class="row">
+            {{ home.homeView(student.first_name, student.id)}}
+        </div>
+        <br>
+        <h3 class="center-text">Personal Info</h3>
+
+        <div class="row justify-content-center">
+        <div class="col-md-8">
+        <div class="table-responsive" style= "text-align: center;">
+            <table class="table table-hover" id="personal-info-table">
+                <thead class="table-hover">
+                    <tr>
+                        <th scope="rowgroup" style="text-align: center;"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="text-align: center;">
+                            <a href="{{url_for('transcript.view')}}" class="btn btn-primary">
+                                View Transcript</a>
+
+                            <a href="{{url_for('registration.view_messages')}}" class="btn btn-primary">
+                                Inbox</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h3 class="center-text">Registration Info</h3>
+        <div class="table-responsive">
+            <table class="table table-hover" id="registration-info-table">
+                <thead class="table-hover">
+                    <tr>
+                        <th scope="rowgroup" style="text-align: center;"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="text-align: center;">
+                            <a href="{{url_for('registration.registration2')}}" class="btn btn-primary">
+                                Register</a>
+
+                            <a href="{{url_for('registration.course_list')}}" class="btn btn-primary">
+                                Course List</a>
+
+                            <a href="{{url_for('registration.professor_list')}}" class="btn btn-primary">Professor List</a>
+
+                            <a href="{{url_for('registration.viewClasses')}}" class="btn btn-primary">
+                                View Classes</a>
+
+                            <a href="{{url_for('registration.my_courses')}}" class="btn btn-primary">
+                                Rate My Course</a>
+
+                            <a href="{{url_for('registration.my_professors')}}" class="btn btn-primary">Rate My Professors</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h3 class="center-text">Advsing Info</h3>
+        <div class="row justify-content-center">
+        <div class="col-md-8" style="text-align: center;">
+        <div class="table-responsive">
+            <table class="table table-hover" id="advising-table">
+                <thead class="table-hover">
+                    <tr>
+                        <th scope="rowgroup" style="text-align: center;"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="text-align: center;">
+                            {% if form1 %}
+                                <a href="{{url_for('students.form_review', studentId = student.id)}}" class="btn btn-primary">
+                                    Form 1</a>
+                            {% else %}
+                                <a href="{{url_for('view_form1')}}" class="btn btn-primary">
+                                    Form 1</a>
+                            {% endif %}
+
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#applyGrad">
+                                Apply to Graduate
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="applyGrad" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5">Apply to Graduate</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="{{url_for('graduation_apply')}}" method="POST" class="needs-validation" novalidate>
+                    <input type="hidden" name="studentId" value="{{student.id}}">
+                    <div class="modal-body text-center">
+                        <label class="form-label">Choose the program you are applying to graduate from:</label>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="program" id="masters" value="masters" required>
+                            <label class="form-check-label" for="masters">Masters</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="program" id="phd" value="phd" required>
+                            <label class="form-check-label" for="phd">PhD</label>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+
+{% block extra_js %}
+    <script>
+        $(document).ready(function () {
+            $('#personal-info-table, #registration-info-table, #advising-table').DataTable({
+                "paging": false,
+                "info": false,
+                "searching": false,
+                "ordering": false,
+                "language": {
+                    "emptyTable": "No actions available.",
+                },
+            });
+        });
+    </script>
+{% endblock extra_js %}
+

@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+    body {
+  background-image: url('/static/iron.png');
+  background-size: cover; /* or contain depending on your preference */
+  background-position: center center;
+  background-repeat: no-repeat;
+  }
+  </style>
+    <head>
+        <title>Write a Recommendation</title>
+    </head>
+    <body>
+        <h1>Check Recommendation</h1>
+        <form method="post" action="{{ url_for('applications.recommendation_check') }}">
+            <label for="email">Enter Your Email:</label>
+            <input type="email" id="email" name="email" required><br>
+
+            <input type="submit" value="Submit">
+        </form>
+    </body>
+    <a href="/">Back</a>
+{% endblock %}

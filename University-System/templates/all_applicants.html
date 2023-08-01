@@ -1,0 +1,136 @@
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+    body {
+  background-image: url('/static/background3.png');
+  background-size: cover; /* or contain depending on your preference */
+  background-position: center center;
+  background-repeat: no-repeat;
+}
+</style>
+    <h1>All Applicant Data</h1>
+    <div>
+        <label for="fname">First Name:</label>
+        <input type="text" id="fname" name="fname" value="{{ application_data[23] }}" disabled>
+    </div>
+    <div>
+        <label for="lname">Last Name:</label>
+        <input type="text" id="lname" name="lname" value="{{ application_data[24] }}" disabled>
+    </div>
+    <div>
+        <label for="uname">Applicant Username:</label>
+        <input type="text" id="uname" name="uname" value="{{ application_data[21] }}" disabled>
+    </div>
+    <div>
+        <label for="pass">Applicant Password:</label>
+        <input type="text" id="pass" name="pass" value="{{ application_data[22] }}" disabled>
+    </div>
+    <div>
+        <label for="city">City:</label>
+        <input type="text" id="city" name="city" value="{{ application_data[26] }}" disabled>
+    </div>
+    <div>
+        <label for="state">State:</label>
+        <input type="text" id="state" name="state" value="{{ application_data[27] }}" disabled>
+    </div>
+    <div>
+        <label for="zip">Zip:</label>
+        <input type="text" id="zip" name="zip" value="{{ application_data[28] }}" disabled>
+    </div>
+    <div>
+        <label for="address">Address:</label>
+        <input type="text" id="address" name="address" value="{{ application_data[25] }}" disabled>
+    </div>
+    <div>
+        <label for="email">Email:</label>
+        <input type="text" id="email" name="email" value="{{ application_data[20] }}" disabled>
+    </div>
+    <div>
+        <label for="uid">UID:</label>
+        <input type="text" id="uid" name="uid" value="{{ application_data[1] }}" disabled>
+    </div>
+    <div>
+        <label for="ssn">SSN:</label>
+        <input type="text" id="ssn" name="ssn" value="{{ application_data[2] }}" disabled>
+    </div>
+        <div>
+            <label for="degree-sought">Degree Sought:</label>
+            <input type="text" id="degree-sought" name="degree-sought" value="{{ application_data[3] }}" disabled>
+        </div>
+        <div>
+            <label for="admission-date">Admission Date:</label>
+            <input type="text" id="admission-date" name="admission-date" value="{{ application_data[4] }}" disabled>
+        </div>
+        <div>
+            <label for="prior-degrees">Prior Degrees:</label>
+            <input type="text" id="prior-degrees" name="prior-degrees" value="{{ application_data[5] }}" disabled>
+        </div>
+        <div>
+            <label for="status">Status:</label>
+            <input type="text" id="status" name="status" value="{{ application_data[6] }}" disabled>
+        </div>
+        <div>
+            <label for="rec-letter">Recommendation Letter:</label>
+            <input type="text" id="rec-letter" name="rec-letter" value="{{ application_data[7] }}" disabled>
+        </div>
+        <div>
+            <label for="year-of-graduation">Year of Graduation:</label>
+            <input type="text" id="year-of-graduation" name="year-of-graduation" value="{{ application_data[8] }}" disabled>
+        </div>
+        <div>
+            <label for="gpa">GPA:</label>
+            <input type="text" id="gpa" name="gpa" value="{{ application_data[9] }}" disabled>
+        </div>
+        <div>
+            <label for="university">University:</label>
+            <input type="text" id="university" name="university" value="{{ application_data[10] }}" disabled>
+        </div>
+        {% if application_data[13] == 0 %}
+        <div>
+            <label for="total-score">Total Score:</label>
+            <input type="text" id="total-score" name="total-score" value="GRE scores not provided" disabled>
+        </div>
+        {% else %}
+        <div>
+            <label for="verbal-score">Verbal Score:</label>
+            <input type="text" id="verbal-score" name="verbal-score" value="{{ application_data[11] }}" disabled>
+        </div>
+        <div>
+            <label for="quantitative-score">Quantitative Score:</label>
+            <input type="text" id="quantitative-score" name="quantitative-score" value="{{ application_data[12] }}" disabled>
+        </div>
+        <div>
+            <label for="total-score">Total Score:</label>
+            <input type="text" id="total-score" name="total-score" value="{{ application_data[13] }}" disabled>
+        </div>
+        {% endif %}
+        <div>
+            <label for="experience">Experience:</label>
+            <textarea id="experience" name="experience" disabled>{{ application_data[14] }}</textarea>
+        </div>
+        <div>
+            <label for="transcript-sent-status">Transcript Sent Status:</label>
+            {% if application_data[15] == 1 %}
+                <input type="text" id="transcript-sent-status" name="transcript-sent-status" value="Sent" disabled>
+            {% else %}
+                <input type="text" id="transcript-sent-status" name="transcript-sent-status" value="Not Sent" disabled>
+            {% endif %}
+        </div>
+        <div>
+            <label for="transcript-received-status">Transcript Received Status:</label>
+            {% if application_data[16] == 1 %}
+            <input type="text" id="transcript-received-status" name="transcript-received-status" value="Received" disabled>
+            {% else %}
+            <input type="text" id="transcript-received-status" name="transcript-received-status" value="Not Received" disabled>
+            {% endif %}
+        </div>
+        <div>
+            <label for="payment">Payment Received Status:</label>
+            {% if application_data[17] == 1 %}
+            <input type="text" id="payment" name="payment" value="Received" disabled>
+            {% else %}
+            <input type="text" id="payment" name="payment" value="Not Received" disabled>
+            {% endif %}
+        </div>
+        {% endblock content %}

@@ -1,0 +1,135 @@
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+    body {
+  background-image: url('/static/diamond.png');
+  background-size: cover; /* or contain depending on your preference */
+  background-position: center center;
+  background-repeat: no-repeat;
+}
+</style>
+    <h1>Review Applications</h1>
+    <input type="text" id="search-box" placeholder="Search by Application ID">
+    <label for="degree-select">Filter by Degree Sought:</label>
+<select id="degree-select">
+    <option value="">All</option>
+    <option value="phd">PhD</option>
+    <option value="masters">Masters</option>
+</select>
+<br>
+    <form method="post" action="{{ url_for('applications.review_applications') }}">
+    <table>
+        <thead>
+            <tr>
+                <th>{% if type == 'faculty' %}Application ID (click link to go to review form){% elif type in ['gs', 'sysadmin'] %}Application ID (click link to see all applicants){% else %}Application ID{% endif %}</th>
+                <th>Applicant UID</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Email</th>
+                <th>Degree Sought</th>
+            </tr> 
+        </thead>
+        <tbody id="table-body">
+            {% for application in applications %}
+                <tr>
+                    <td>
+                        {% if type == 'faculty' %}
+                            <a href="{{ url_for('applications.review_form', applicant_id=application[0]) }}">{{ application[0] }}</a>
+                        {% elif type in ['gs', 'sysadmin'] %}
+                            <a href="{{ url_for('applications.all_applicants', applicant_id=application[0]) }}">{{ application[0] }}</a>            
+                        {% else %}
+                            {{ application[0] }}
+                        {% endif %}
+                    </td>                   
+                    <td>{{ application[1] }}</td>
+                    <td>{{ application[2] }}</td>
+                    <td>{{ application[3] }}</td>
+                    <td>{{ application[4] }}</td>
+                    <td>{{ application[6] }}</td>
+                    {% if type in ['gs'] %}
+                    <td>
+                        <form method="post" action="{{ url_for('applications.review_applications') }}">
+                        <select name="action">
+                            <option value="admit">Admit Without Aid</option>
+                            <option value="admit_aid">Admit With Aid</option>
+                            <option value="border">Borderline Admit (pending)</option>
+                            <option value="reject">Reject</option>
+                        </select>
+                        <input type="hidden" name="app_id" value="{{ application[0] }}">
+                        <input type="submit" value="Submit Decision">
+                        </form>
+                    </td>
+                    {% endif %}
+                <td>
+                    {% if type == 'gs' %}
+                    <form method="post" action="{{ url_for('applications.review_applications') }}">
+                        <select name="transcript_received">
+                            <option value="received">Transcript Received</option>
+                            <option value="not_received">Transcript Not Received</option>
+                        </select>
+                        <input type="hidden" name="app_id" value="{{ application[0] }}">
+                        <input type="submit" value="Submit Transcript Status">
+                    </form>
+                    {% endif %}
+                    </td>
+                    <td>
+                    {% if type == 'gs' %}
+                    {% if applications[0][5] == 1 %}
+                    <p>Payment has been paid: </p>
+                    <form method="post" action="{{ url_for('applications.confirm_student', app_id=application[0]) }}">
+                        <input type="submit" value="Confirm Student">
+                    </form>
+                {% endif %}
+                {% endif %}
+                 </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <br><br>
+    <!-- Add a form to review applications -->
+    {% if type in ['gs', 'sysadmin'] %}
+    <a href="{{ url_for('applications.all_reviews') }}">See All Reviews</a>
+{% endif %}
+    <br><br>
+    </form>
+    <script>
+        const searchBox = document.getElementById('search-box');
+        const tableBody = document.getElementById('table-body');
+    
+        searchBox.addEventListener('input', () => {
+            const searchText = searchBox.value.trim().toLowerCase();
+            const rows = tableBody.querySelectorAll('tr');
+    
+            rows.forEach(row => {
+                const appId = row.querySelector('td:first-child').textContent.trim().toLowerCase();
+                if (appId.includes(searchText)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        });
+    </script>
+        <script>
+            const degreeSelect = document.getElementById("degree-select");
+            const tableRows = document.querySelectorAll("#table-body tr");
+            
+            degreeSelect.addEventListener("change", () => {
+                const selectedDegree = degreeSelect.value;
+                
+                tableRows.forEach(row => {
+                    const degree = row.cells[5].textContent.toLowerCase();
+                    
+                    if (selectedDegree === "" || selectedDegree === degree) {
+                        row.style.display = "table-row";
+                    } else {
+                        row.style.display = "none";
+                    }
+                });
+            });
+        </script>
+    
+    {% endblock %}

@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% block title %} Courses {% endblock %}
+
+{% block content %}
+<style>
+    body {
+  background-image: url('/static/iron.png');
+  background-size: cover; /* or contain depending on your preference */
+  background-position: center center;
+  background-repeat: no-repeat;
+  }
+  </style>
+<div class="container">
+    <h2>Courses</h2>
+    <a href="/">
+        <button type="button">Return Home</button>
+    </a>
+    <br>
+    <br>
+    <div class="table-responsive">
+        <table class="table table-hover" id="courses-table">
+            <thead class="table-light">
+                <tr>
+                    <th scope="col">Course Title</th>
+                    <th scope="col">Course Number</th>
+                    <th scope="col">Course Location</th>
+                    <th scope="col">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for course in courses %}
+                    <tr>
+                        <td>{{ course.title }}</td>
+                        <td>{{ course.cnumber }}</td>
+                        <td>{{ course.location }}</td>
+                        <td>
+                            <form action="{{url_for('registration.viewStudents')}}" method="post" style="display:inline;">
+                                <input type="hidden" name="course_id" value="{{course.ID}}">
+                                <button type="submit" class="btn btn-primary">View Students</button>
+                            </form>
+                            <form action="{{url_for('registration.course_page', CID=course.ID)}}" method="post" style="display:inline;">
+                                <input type="hidden" name="course_id" value="{{course.ID}}">
+                                <button type="submit" class="btn btn-primary">View Course Page</button>
+                            </form>
+                            <form action="{{url_for('registration.course_ratings')}}" method="get" style="display:inline;">
+                                <input type="hidden" name="course_id" value="{{course.ID}}">
+                                <button type="submit" class="btn btn-info">View Ratings</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock content %}
+
+{% block extra_js %}
+    <script>
+        $(document).ready( function () {
+            $('#courses-table').DataTable({
+                "language": {
+                    "emptyTable": "No courses found.",
+                    "zeroRecords": "No matching courses found."
+                },
+                order: [[0, 'asc']],
+            });
+        });
+    </script>
+{% endblock extra_js %}

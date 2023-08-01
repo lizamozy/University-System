@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}Unauthorized{% endblock %}
+{% block content %}
+<style>
+    body {
+  background-image: url('/static/background3.png');
+  background-size: cover; /* or contain depending on your preference */
+  background-position: center center;
+  background-repeat: no-repeat;
+}
+</style>
+    <h2 class="pb-2">401: Unauthorized</h2>
+    <p>You do not have permission to view the page or perform the action you requested.</p>
+    <p>
+        <a href="javascript:history.back()" class="btn btn-primary">Go back</a>
+        &nbsp;
+        <a href="{{url_for('home')}}" class="btn btn-outline-secondary">Go home</a>
+    </p>
+{% endblock content %}

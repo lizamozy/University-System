@@ -1,0 +1,245 @@
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+    body {
+  background-image: url('/static/background3.png');
+  background-size: cover; /* or contain depending on your preference */
+  background-position: center center;
+  background-repeat: no-repeat;
+}
+</style>
+    <h1>Application Form</h1>
+    <form action="{{ url_for('applications.application_form') }}" id="my-form "method="post">
+      <!-- Add form fields here -->
+        <label for="FirstName">First Name:</label>
+        <input type="text" id="FirstName" name="FirstName" value="{{ first_name }}" disabled>
+        <br><br>
+
+        <label for="LastName">Last Name:</label>
+        <input type="text" id="LastName" name="LastName" value="{{ last_name }}" disabled>
+        <br><br>
+
+        <label for="City">City:</label>
+        <input type="text" id="City" name="City" value="{{ city }}" disabled>
+        <br><br>
+
+        <label for="State">State:</label>
+        <input type="text" id="State" name="State" value="{{ state }}" disabled>
+        <br><br>
+
+        <label for="Zip">ZIP Code:</label>
+        <input type="text" id="Zip" name="Zip" value="{{ zip }}" disabled>
+        <br><br>
+
+        <label for="Address">Address:</label>
+        <input type="text" id="Address" name="Address" value="{{ address }}" disabled>
+        <br><br>
+
+        <label for="Email">Email:</label>
+        <input type="text" id="Email" name="Email" value="{{ email }}" disabled>
+        <br><br>
+
+        <label for="SSN">SSN:</label>
+        {% if ssN %}
+            <input type="text" id="SSN" name="SSN" value="{{ ssN }}" disabled>
+        {% else %}
+            <input type="text" id="SSN" name="SSN" pattern="\d{3}-\d{2}-\d{4}" placeholder="XXX-XX-XXXX" required>
+        {% endif %}
+        <br><br>
+
+
+        <label for="DegreeSought">Degree Sought:</label>
+        <select id="DegreeSought" name="DegreeSought" {% if dgsought %}disabled{% endif %} required>
+            <option value="">-- Select degree --</option>
+            <option value="masters" {% if dgsought == 'masters' %}selected{% endif %}>Master of Science (MS)</option>
+            <option value="phd" {% if dgsought == 'phd' %}selected{% endif %}>Doctor of Philosophy (PhD)</option>
+        </select>
+        <br><br> 
+
+        <label for="TotalScore">GRE Total Score:</label>
+        {% if totalscore %}
+        <input type="number" id="TotalScore" name="TotalScore" min="260" max="340" class="gre-score" value="{{ totalscore }}" disabled>
+        {% else %}
+        <input type="number" id="TotalScore" name="TotalScore" min="260" max="340" class="gre-score">
+        {% endif %}
+        <br><br>
+
+        <label for="VerbalScore">GRE Verbal Score:</label>
+        {% if verbscore %}
+        <input type="number" id="VerbalScore" name="VerbalScore" min="130" max="170" class="gre-score"  value="{{ verbscore}}" disabled>
+        {% else %}
+        <input type="number" id="VerbalScore" name="VerbalScore" min="130" max="170" class="gre-score">
+        {% endif %}
+        <br><br>
+
+        <label for="QuantitativeScore">GRE Quantitative Score:</label>
+        {% if quantscore %}
+        <input type="number" id="QuantitativeScore" name="QuantitativeScore" min="130" max="170" class="gre-score" value="{{ quantscore }}" disabled>
+        {% else %}
+        <input type="number" id="QuantitativeScore" name="QuantitativeScore" min="130" max="170" class="gre-score">
+        {% endif %}
+        <br><br>
+
+        <label for="PriorDegrees">Prior Degrees (max 2):</label>
+        {% if priordeg %}
+        <textarea id="PriorDegrees" name="PriorDegrees" rows="3" cols="40" maxlength="100" disabled>{{ priordeg }}</textarea>
+        {% else %}
+        <textarea id="PriorDegrees" name="PriorDegrees" rows="3" cols="40" maxlength="100" required></textarea>
+        {% endif %}
+        <br><br>       
+
+        <label for="YearofGraduation">Year of Graduation:</label>
+        {% if year %}
+        <input type="number" id="YearofGraduation" name="YearofGraduation" value="{{ year }}" disabled>
+        {% else %}
+        <input type="number" id="YearofGraduation" name="YearofGraduation" min="1950" max="2023" required>
+        {% endif %}
+        <br><br>
+
+        <label for="GPA">GPA:</label>
+        {% if gp %}
+        <input type="number" id="GPA" name="GPA" step="0.01" min="0.01" max="4" value="{{ gp }}" disabled>
+        {% else %}
+        <input type="number" id="GPA" name="GPA" step="0.01" min="0.01" max="4" required>
+        {% endif %}
+        <br><br>
+
+        <label for="University">Previous University:</label>
+        {% if unipast %}
+        <input type="text" id="University" name="University" value="{{ unipast }}" disabled>
+        {% else %}
+        <input type="text" id="University" name="University" required>
+        {% endif %}
+        <br><br>        
+
+        <label for="Experience">Prior Work Experience:</label>
+        {% if exper %}
+        <textarea id="Experience" name="Experience" rows="3" cols="40" maxlength="200" disabled>{{ exper }}</textarea>
+        {% else %}
+        <textarea id="Experience" name="Experience" rows="3" cols="40" maxlength="200" required></textarea>
+        {% endif %}
+        <br><br>
+
+        <label for="AdmissionDate">Admission Date (Semester and Year):</label>
+        {% if adate %}
+        <input type="text" id="AdmissionDate" name="AdmissionDate" value="{{ adate }}" disabled>
+        {% else %}
+        <input type="text" id="AdmissionDate" name="AdmissionDate" pattern="(Fall|Spring|Summer)\s\d{4}" title="Please enter a semester (Fall, Spring, or Summer) followed by a four-digit year (e.g. Summer 2023)" required>
+        {% endif %}
+        <br><br>        
+
+        <label for="recommendation_letters">Email of Recommendation Letter Writers:</label>
+        {% if reclet %}
+        <input type="email" id="recommendation_letters_1" name="recommendation_letters_1" value="{{ reclet[0] }}" readonly>
+        <input type="email" id="recommendation_letters_2" name="recommendation_letters_2" value="{{ reclet[1] }}" readonly>
+        <input type="email" id="recommendation_letters_3" name="recommendation_letters_3" value="{{ reclet[2] }}" readonly>
+        {% else %}
+        <input type="email" id="recommendation_letters_1" name="recommendation_letters_1" required>
+        <input type="email" id="recommendation_letters_2" name="recommendation_letters_2">
+        <input type="email" id="recommendation_letters_3" name="recommendation_letters_3">
+        {% endif %}
+        <br><br>
+        
+
+        <label for="TranscriptSentStatus">Transcript Sent to GW:</label>
+        <select id="TranscriptSentStatus" name="TranscriptSentStatus" {%  if tscript is not none %} disabled {% endif %}required>
+            <option value="">-- Select one --</option>
+            <option value="1" {% if tscript == 1 %}selected{% endif %}>Yes</option>
+            <option value="0" {% if tscript == 0 %}selected{% endif %}>No</option>
+        </select>
+        <br><br>
+
+        <script>
+            const degreeSought = document.getElementById("DegreeSought");
+            const totalScoreInput = document.getElementById("TotalScore");
+            const verbalScoreInput = document.getElementById("VerbalScore");
+            const quantitativeScoreInput = document.getElementById("QuantitativeScore");
+          
+            degreeSought.addEventListener("change", function() {
+              if (degreeSought.value === "MS") {
+                totalScoreInput.removeAttribute("required");
+                verbalScoreInput.removeAttribute("required");
+                quantitativeScoreInput.removeAttribute("required");
+              } else {
+                totalScoreInput.setAttribute("required", "");
+                verbalScoreInput.setAttribute("required", "");
+                quantitativeScoreInput.setAttribute("required", "");
+              }
+            });
+          </script>
+          
+        {% if status != 'incomplete' %}
+        <input type="button" id="edit-button" value="Edit info" onclick="enableEdit()">
+        {% endif %}
+        <br>
+        <input type="submit" value="Submit Application">
+    </form>
+    <script>
+      // declare a variable to store the original attributes of the input fields
+      var inputAttributes = {};
+  
+      function enableEdit() {
+          var inputs = document.getElementsByTagName("input");
+          var textareas = document.getElementsByTagName("textarea");
+          
+          for (var i = 0; i < inputs.length; i++) {
+              // store the original attributes of each input field
+              inputAttributes[inputs[i].id] = {
+                  "readonly": inputs[i].hasAttribute("readonly"),
+                  "disabled": inputs[i].hasAttribute("disabled")
+              };
+              inputs[i].removeAttribute("readonly");
+              inputs[i].removeAttribute("disabled");
+          }
+          
+          for (var i = 0; i < textareas.length; i++) {
+              inputAttributes[textareas[i].id] = {
+                  "readonly": textareas[i].hasAttribute("readonly"),
+                  "disabled": textareas[i].hasAttribute("disabled")
+              };
+              textareas[i].removeAttribute("readonly");
+              textareas[i].removeAttribute("disabled");
+          }
+
+          var transcriptSentStatus = document.getElementById("TranscriptSentStatus");
+          transcriptSentStatus.removeAttribute("disabled");
+
+          var degreesought = document.getElementById("DegreeSought");
+          degreesought.removeAttribute("disabled");
+          
+          var editButton = document.getElementById("edit-button");
+          editButton.value = "Edit info";
+          editButton.onclick = enableEdit;
+          document.getElementById("my-form").submit();
+      }
+  </script>
+  
+    <script type="text/javascript">
+      document.addEventListener("DOMContentLoaded", function(event) { 
+          var reclet = "{{ reclet }}";
+          var recArr = reclet.split(" ");
+          var rec1 = recArr[0] || '';
+          var rec2 = recArr[1] || '';
+          var rec3 = recArr[2] || '';
+          document.getElementById("recommendation_letters_1").value = rec1;
+          document.getElementById("recommendation_letters_2").value = rec2;
+          document.getElementById("recommendation_letters_3").value = rec3;
+          if (reclet !== '') {
+              document.getElementById("recommendation_letters_1").readOnly = true;
+              document.getElementById("recommendation_letters_2").readOnly = true;
+              document.getElementById("recommendation_letters_3").readOnly = true;
+              if (recArr.length === 1) {
+                  document.getElementById("recommendation_letters_2").readOnly = false;
+                  document.getElementById("recommendation_letters_3").readOnly = false;
+              }
+              if (recArr.length === 2) {
+                  document.getElementById("recommendation_letters_3").readOnly = false;
+              }
+          }
+      });
+    </script>
+    
+    <br><br>
+    <a href="/">Back</a>
+    {% endblock %}

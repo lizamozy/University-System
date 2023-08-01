@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block title %}Transcript{% endblock %}
+{% block content %}
+{% import 'backbtn.html' as back %}
+    {{back.backBtn()}}
+    <style>
+        body {
+      background-image: url('/static/iron.png');
+      background-size: cover; /* or contain depending on your preference */
+      background-position: center center;
+      background-repeat: no-repeat;
+    }
+    </style>
+    <h2 class="pb-2">Transcript</h2>
+    <p><strong>Overall GPA:</strong> {{overallGpa}}</p>
+    <p><strong>Academic Status:</strong> {% if suspended %}Academic Suspension{% else %}Good Standing{% endif %}</p>
+    {% for semester in semesters %}
+        <div class="card mb-5">
+            <h5 class="card-header">
+                {{ semester.semester.capitalize() }} {{ semester.year }}
+            </h5>
+            <div class="card-body">
+                <p><strong>Semester GPA:</strong> {{semester.gpa}}</p>
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead class="table-light">
+                            <tr>
+                                <th scope="col">Department</th>
+                                <th scope="col">Course</th>
+                                <th scope="col">Title</th>
+                                <th scope="col">Grade</th>
+                                <th scope="col">Credits</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for course in semester.courses %}
+                                <tr>
+                                    <td>{{ course.department }}</td>
+                                    <td>{{ course.cnumber }}</td>
+                                    <td>{{ course.title }}</td>
+                                    <td>{{ course.grade }}</td>
+                                    <td>{{ course.credits }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+    {% if semesters|length == 0 %}
+        <div class="alert alert-warning" role="alert">
+            No transcript data available.
+        </div>
+    {% endif %}
+{% endblock content %}
